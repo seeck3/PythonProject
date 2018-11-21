@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <style>
+    *{
+        /* outline: 1px dotted red; */
+    }
+    h1{
+        text-align: center;
+    }
+    form{
+        display: inline-block;
+    }
+    div{
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px;
+    }
+    /* .button{
+        position: absolute;
+        margin-left: 500px;
+        margin-top: 400px;
+    } */
+    table{
+        margin: 20px;
+    }
+    .logout{
+        margin-left: 800px;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Users Index</h1>
+        <a class="logout" href="/logout">Logout</a>
+
+    </div>
+        <br>
+        <a class="button" href="/add_item">Add Items</a>
+        <br>
+        <br>
+        <table>
+            <h5>Your Wish List:</h4>
+              
+                
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Added By</th>
+              <th>Date Added</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+                {% for user in mywish %}
+                <tr> 
+                    <th><a href="/show/{{ user.id }}">{{ user.item }}</a></th>
+                    <th>{{ user.uploaded_by.name }}</th>
+                    <th>{{ user.created_at }}</th>
+                    {% if user.uploaded_by.id == request.session.id %}
+                    <th><a class="button" href="/remove/{{ user.id }}">Remove</a></th>
+                        {% else %}
+                    <th><a class="button" href="/delete/{{ user.id }}">Remove from my Wishlist</a></th>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+          </tbody>
+        </table>
+
+        <table>
+            <h5>Other Users' Wish List:</h5>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in otherwish %}
+                    <tr>
+                      <td><a href="/show/{{ user.id }}">{{ user.item }}</a></td>
+                      <td>{{ user.uploaded_by.name }}</td>
+                      <td>{{ user.updated_at }}</td>
+                      <td>
+                        <!-- <a href="/{{ user.id }}/edit" class="button">Edit User</a> -->
+                          <form action="/wish/{{ user.id }}" method="post">
+                              {% csrf_token %}
+                              <input type="submit" value="Add to My Wish List">
+                          </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+      
+        
+</body>
+</html>

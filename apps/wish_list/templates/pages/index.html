@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+    <link rel="stylesheet" type="text/css" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <style>
+    *{
+        /* outline: 1px dotted red; */
+    }
+    h1{
+        text-align: center;
+    }
+    form{
+        display: inline-block;
+    }
+    div{
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px;
+    }
+    </style>
+    <title>Page Title</title>
+</head>
+<body>
+    <div class="wrapper">
+
+        <h1>WELCOME!!</h1>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div>
+        <h2>Register</h2>
+  
+            <form action="/process/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="register">
+                <label for="names">Name:</label>
+                <input type="text" name="fullname" placeholder="Name">
+                <label for="usernames">Username:</label>
+                <input type="text" name="username" placeholder="Nickname">
+                <label for="passwords">Password:</label>
+                <input type="password" name="password" placeholder="password">
+                <label for="confirms">Confirm:</label>
+                <input type="password" name="confirm" placeholder="password">
+                <label for="dates">Date Hired:</label>
+                <input type="date" name="date">
+                <br>
+                <input type="submit" value="Create New User">
+                
+            </form>
+        </div>
+        <div>
+
+            <h2>Login</h2>
+            <form action="/process/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username">
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="password">
+                <br>
+                <input type="submit" value="Login User">
+                
+            </form>
+        </div>
+    </div>
+    </body>
+</html>
